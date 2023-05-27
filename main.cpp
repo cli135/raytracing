@@ -28,7 +28,7 @@ int main() {
       // make sure to cast one operand
       // to avoid integer division
       r = 1.0 - j/static_cast<double>(image_height);
-      g = 0.0 + i/static_cast<double>(image_width);
+      g = 0.0 + j/static_cast<double>(image_width);
       b = b;
     }
   }

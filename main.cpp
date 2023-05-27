@@ -1,3 +1,6 @@
+#include "vec3.h"
+#include "color.h"
+
 #include <iostream>
 
 using namespace std;
@@ -16,10 +19,6 @@ int main() {
   // max color
   cout << 255 << endl;
 
-  // pixels rgb values
-  double r = 0.0;
-  double g = 1.0;
-  double b = 63.0 / 255;
   for (int i = 0; i < image_width; i++) {
     
     // progress indicator
@@ -27,17 +26,10 @@ int main() {
 
     for (int j = 0; j < image_height; j++) {
       // current pixel at (i, j)
-      int ir = static_cast<int>(255.99 * r);
-      int ig = static_cast<int>(255.99 * g);
-      int ib = static_cast<int>(255.99 * b);
-      
-      cout << ir << " " << ig << " " << ib << endl;
-
-      // make sure to cast one operand
-      // to avoid integer division
-      r = 0.0 + j/static_cast<double>(image_height);
-      g = 1.0 - i/static_cast<double>(image_width);
-      b = b;
+      vec3 current_pixel(j/static_cast<double>(image_height-1),
+                         1.0 - i/static_cast<double>(image_width-1),
+                         0.25);
+      write_color(std::cout, current_pixel);
     }
   }
 

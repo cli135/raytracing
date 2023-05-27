@@ -23,7 +23,7 @@ class vec3 {
 
     // negate overload
     vec3 operator-() const {
-      vec3(-e[0], -e[1], -e[2]);
+      return vec3(-e[0], -e[1], -e[2]);
     }
 
     // what is the point of these two methods?
@@ -80,7 +80,7 @@ class vec3 {
     }
 
     double length() const {
-      return std::sqrt(length_squared);
+      return std::sqrt(length_squared());
     }
 
     double length_squared() const {
@@ -88,10 +88,90 @@ class vec3 {
     }
 
 
-}
+};
 
 // Type aliasing for vec3
 using point3 = vec3;  // 3D point
 using color = vec3;   // RGB color
+
+// vec3 utility functions
+
+// methods outside of the class that also overload operators
+// kind of like static methods
+
+// no const modifiers supplied on methods here
+// because they are not part of a class and therefore
+// do not have any instance variables to keep const
+// in the first place
+
+// return an ostream reference
+// you can't return ostream by value
+// https://cplusplus.com/forum/beginner/243358/
+
+// you need to return a reference to the same ostream
+// in case things are chained to it later
+
+inline std::ostream& operator<<(std::ostream & out, const vec3 & v) {
+  // remember to put out at the beginning and return the whole string
+  return out << v.x() << " " << v.y() << " " << v.z();
+  // a more clear way of the binary fold left accumulation recursion
+  // that the << and most binary argument operators are doing like +=
+  // in this case
+  // return (((out << v.x()) << " " << v.y()) << " " << v.z());
+}
+
+
+// vector addition
+inline vec3 operator+(const vec3 & lhs, const vec3 & rhs) {
+  return vec3(lhs.x() + rhs.x(), lhs.y() + rhs.y(), lhs.z() + rhs.z());
+}
+
+// vector subtraction
+inline vec3 operator-(const vec3 & lhs, const vec3 & rhs) {
+  return lhs + (-rhs);
+}
+
+// hadamard coordinate wise vector multiplcation
+inline vec3 operator*(const vec3 & lhs, const vec3 & rhs) {
+  return vec3(lhs.x() * rhs.x(), lhs.y() * rhs.y(), lhs.z() * rhs.z());
+}
+
+// scalar before
+inline vec3 operator*(double t, const vec3 & v) {
+  return vec3(t * v.x(), t * v.y(), t * v.z());
+}
+
+// scalar after
+inline vec3 operator*(const vec3 & v, double t) {
+  // scalar multiplcation with vector commutes
+  // so just turn it around and use the other definition
+  return t * v;
+}
+
+// scalar division
+inline vec3 operator/(const vec3 & v, double t) {
+  // scalar multiplcation with vector commutes
+  // and use the inverse (1.0/t) to scale down and do division
+  return (1.0/t) * v;
+}
+
+// dot product
+inline double dot(const vec3 & u, const vec3 & v) {
+  return  u.x() * v.x() +
+          u.y() * v.y() +
+          u.z() * v.z();
+}
+
+// cross product
+inline vec3 cross(const vec3 & u, const vec3 & v) {
+  return vec3(u.y() * v.z() - u.z() * v.y(),
+              u.x() * v.z() - u.z() * v.x(),
+              u.x() * v.y() - u.y() * v.x());
+}
+
+// unit vector
+inline vec3 unit_vector(const vec3 & v) {
+  return v / v.length();
+}
 
 #endif

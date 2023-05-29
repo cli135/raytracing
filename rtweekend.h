@@ -5,6 +5,32 @@
 #include <limits>
 #include <memory>
 
+// Common headers
+
+// since we have header guards
+// on all .h files, we can just include
+// them multiple times and there will be
+// no problems since it will include only once
+// due to header guards
+
+// TODO: check if it is okay to just comment out
+// these dependencies since they cause circularity
+// in dependencies and it's just easier not to include
+// them here because they aren't used in this rtweekend.h
+// file anyways
+
+// #include "ray.h"
+// #include "vec3.h"
+
+// but if you do some circular includes
+// like where rtweekend.h and vec3.h both include each
+// other, then that is a problem and going on infinite forever
+// like mutual recursion
+
+// so I think this cannot be the case
+
+
+
 #include <random>
 
 // std::shared_ptr
@@ -54,16 +80,6 @@ inline double clamp(double x, double min, double max) {
   }
 }
 
-
-// Common headers
-
-// since we have header guards
-// on all .h files, we can just include
-// them multiple times and there will be
-// no problems since it will include only once
-// due to header guards
-#include "ray.h"
-#include "vec3.h"
 
 
 #endif

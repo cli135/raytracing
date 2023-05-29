@@ -1,8 +1,12 @@
 #ifndef VEC3_H
 #define VEC3_H
 
+
+
 #include <cmath>
 #include <iostream>
+
+#include "rtweekend.h"
 
 class vec3 {
 
@@ -87,6 +91,15 @@ class vec3 {
       return e[0] * e[0] + e[1] * e[1] + e[2] * e[2];
     }
 
+    // random vec3 with components each between [0, 1)
+    inline static vec3 random_vec() {
+      return vec3(random_double(), random_double(), random_double());
+    }
+
+    // random vec3 with components each between [min, max)
+    inline static vec3 random_vec(double min, double max) {
+      return vec3(random_double(min, max), random_double(min, max), random_double(min, max));
+    }
 
 };
 
@@ -172,6 +185,20 @@ inline vec3 cross(const vec3 & u, const vec3 & v) {
 // unit vector
 inline vec3 unit_vector(const vec3 & v) {
   return v / v.length();
+}
+
+// random vector in the unit sphere
+// by picking random points in [-1, 1]^3
+// and repeating until we finally get one in
+// the unit sphere
+// it's a geometric random variable for the number
+// of tries until it succeeds.
+vec3 random_vec_in_unit_sphere() {
+  vec3 test;
+  do {
+    test = vec3::random_vec(-1, 1); // some vector in [-1, 1]^3
+  } while (test.length() >= 1);
+  return test;
 }
 
 #endif

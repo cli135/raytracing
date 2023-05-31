@@ -201,4 +201,21 @@ vec3 random_vec_in_unit_sphere() {
   return test;
 }
 
+vec3 random_in_same_hemisphere(const vec3 & normal) {
+  vec3 v = random_vec_in_unit_sphere();
+  if (dot(v, normal) <= 0.0) {
+    // try again
+    return random_in_same_hemisphere();
+  }
+  else {
+    // success!
+    // literally just any vec
+    // across the whole hemisphere works,
+    // although I am not sure if it is a uniform
+    // probability distribution
+    // but many are the same.
+    return v;
+  }
+}
+
 #endif

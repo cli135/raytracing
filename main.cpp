@@ -57,7 +57,22 @@ color ray_color(const ray& r, const hittable & world, const int bounce_recursion
 
       // oops, I messed up tip to tail vector addition
       // below is the correct formula
-      vec3 target = rec.p + unit_vector(rec.normal) + random_vec_in_unit_sphere();
+      // vec3 target = rec.p + unit_vector(rec.normal) + random_vec_in_unit_sphere();
+
+      // picking points in the unit sphere and then normalizing those
+      // in order to pick points on the unit sphere
+      // and achieve the true lambertian
+      vec3 target = rec.p + unit_vector(rec.normal) + unit_vector(random_vec_in_unit_sphere());
+
+
+      // hemispherical scattering (not quite uniform but hemispherical i think??)
+      // there is a difference between these three but not quite sure what it is.
+      // need to diagram more closely.
+      // vec3 target = rec.p + random_in_same_hemisphere(rec.normal);
+
+
+
+      
       // new beam of reflected light starts at collision site rec.p
       // and goes in any random direction in the unit sphere, which is
       // unit_vector(rec.normal) + random_vec_in_unit_sphere()
@@ -111,7 +126,7 @@ int main() {
   // to take significantly longer, but it increases
   // shadow difference because it allows crevices to
   // be shadows while other light can bounce away
-  const int max_bounce_recursion_depth = 50;
+  const int max_bounce_recursion_depth = 20;
 
 
   // world
